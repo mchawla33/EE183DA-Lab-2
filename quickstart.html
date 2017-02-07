@@ -1,5 +1,70 @@
 <html>
+<head>
+		<title>MusicBot</title>
+	</head>
    <body>
-      <text>batman></text>
+   		<nav>
+    		<ul>
+        		<li><a href="/">Home</a></li>
+	        	<li><a href="/quickstart">Quick Start</a></li>
+        		<li><a href="/dev">Development</a></li>
+        		<li><a href="/schematics">Schematics</a></li>
+        		<li><a href="/code">Code</a></li>
+        		<li><a href="/demo">Demonstration</a></li>
+    		</ul>
+		</nav>
+        <center><h1>Quick Start Guide</h1></center>
+        <div>
+        	<pre>
+        	This is a guide to use MusicBot once it has already been assembled. Check the Schematics tab for images of MusicBot. In order to develop from scratch, take a look at the Development tab. 
+        	This will be a plug-n-play style guide, although software installation will be required.
+        	</pre>
+        	<br>
+        	<h3>Materials</h3>
+        	<pre>
+			MusicBot
+				ESP8266-12E microcontroller
+				NodeMCU motorshield
+				FEETECH FS90R servo
+				“Drumstick”
+				“Drums”
+			Windows 10 Computer
+			Micro-USB cable
+			Internet Connection
+			</pre>
+			<h3>Part A: Arduino Setup</h3>
+			<ol>
+				<li>Connect the ESP8266 to your computer via micro-USB cable.</li> 
+				<li>Open the Device Manager on your laptop. Under “Other Devices” there should be a device called CP120x USB to UART Bridge Controller. This is your hardware.</li> 
+				<li>Download the driver software from here: http://www.chinstruments.com/USB_416.shtml</li>
+				<li>Right click on CP120x USB to UART Bridge Controller in your device manager. Click on Update Driver Software. Follow onscreen instructions to select and installed the drive you downloaded in the previous step.</li> 
+				<li>Download and install the Arduino IDE from here: https://www.arduino.cc/en/Main/Software</li>
+				<li>Open up the Arduino IDE. Go to File > Preferences. Under Additional Boards Manager URL, copy and paste this address: http://arduino.esp8266.com/stable/package_esp8266com_index.json</li>
+				<li>Go to Tools > Boards > Boards Manager. On the list, find “esp8266 of ESP8266 Community”. Select and install it.</li>
+				<li>Go back to your device manager. Look under “Ports(COM & LPT)”. Find CP120x USB to UART Bridge Controller. Make note of the port number in parentheses.</li>
+				<li>In Arduino, go to Tools > Board and select NodeMCU 1.0 (ESP8266-12E Module).</li>
+				<li>Go to Tools > Port and select the port that was listed in your device manager.</li>
+				<li>Go to Tools > Upload Speed and select 115200.</li>
+				<li>You are now ready to run the programs included in this repository.</li>
+			</ol>
+			<h3>Part B: Operate in Autonomous Mode</h3>
+			<ol>
+				<li>Connect the ESP8266 to the NodeMCU Motor Shield. Connect the servo to the GPIO of the motor shield. See the Schematics directory for more information and pictures.</li> 
+				<li>Download the Arduino program titled “MusicBot_Autonomous”.</li>
+				<li>Setup the robot’s “drums” as detailed in the Schematic.</li>  
+				<li>Compile and upload the program by clicking Sketch > Upload or by clicking the right arrow at the top of the Arduino IDE.</li> 
+				<li>The robot will begin to play!</li> 
+			</ol>
+			<h3>Part C: Operate with Human Control</h3>
+			<ol>
+				<li>Connect the ESP8266 to the NodeMCU Motor Shield. Connect the servo to the GPIO of the motor shield. See the Schematics directory for more information and pictures.</li>
+				<li>Download the Arduino program titled “MusicBot_Web”.</li>
+				<li>Setup the robot’s “drums” as detailed in the Schematic.</li>
+				<li>Compile and upload the program by clicking Sketch > Upload or by clicking the right arrow at the top of the Arduino IDE.</li>
+				<li>Open your computer’s Network settings. Connect to the network named “MusicBot”. The password is “batman”. (The username and password is set in the Wifi.softAP function and can be set to your preference.)</li> 
+				<li>Open a browser window and navigate to http://192.168.4.1/A (If the above IP address does not work, open Tools > Serial Monitor. There will be an IP listed there.)</li>
+				<li>There are three pre programmed “songs”. Clicking on the corresponding buttons will make the robot play each song!</li> 
+			</ol>
+        </div>
    </body>
 </html>

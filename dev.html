@@ -1,0 +1,111 @@
+<html>
+<head>
+    <title>MusicBot</title>
+  </head>
+   <body>
+   	<nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/quickstart">Quick Start</a></li>
+            <li><a href="/dev">Development</a></li>
+            <li><a href="/schematics">Schematics</a></li>
+            <li><a href="/code">Code</a></li>
+            <li><a href="/demo">Demonstration</a></li>
+        </ul>
+    </nav>
+        <center><h1>Development Process</h1></center>
+        <div>
+        	<h3>Objective:</h3>
+          <pre>
+            The purpose of the project was to develop a robot that could play music. My initial 
+            thought process was to model it off of an already existing instrument. In order to keep things
+            simple, I chose to model it off a drumstick and a pair of drums. This did not mean an actual 
+            drum set, but rather a long cylindrical object could hit something that would make noise. This 
+            was my mindset for developing this robot.
+          </pre>
+          <h3>Materials:</h3>
+          <ol>
+            <li>ESP8266 microcontroller</li>
+            <li>NodeMCU motor shield</li>
+            <li>FEETECH FS90R servo</li>
+            <li>“Drumstick” (I used a plastic knife)</li>
+            <li>“Drums” (I used two cups)</li>
+            <li>Tape</li>
+            <li>Small square of cardboard</li>
+          </ol>
+          <h3>Development:</h3>
+          <pre>
+          The first part of the process was to get the motor working. I connected the microcontroller to the
+          motor shield. These two parts are made to be compatible and they just slipped right into each other.
+          Next, the servo was connected. I chose to use a servo which allowed me to set the exact angle of the
+          motor. This would allow me to mimic the motion of a drummer changing the angle of his or her
+          drumstick in order to strike the drum. If I had a control over the angle, I could change the
+          angles at varying speeds to repeatedly hit my “drum”. Therefore, I chose this servo over a
+          continuous servo. The servo was connected to the GPIO pins of the motor shield,which are mapped
+          to the IO pins of the microcontroller. 
+
+          The next step in the development was software based. I decided to use the Servo arduino library. This
+          library gave a simple interface and allowed me to set precise angles. As per the documentation for
+          the library, the attach() function was used to map the ESP8266 pin to the servo. The
+          writeMicroseconds() function could be used to set the angle. At this point, I used a circular
+          attachment to create a rotating base on the motor. Using tape, I fixed my “drumstick” onto the
+          motor. For the “drumstick”, I used a plastic knife. It has a straight shape and a hard exterior
+          like a drumstick, yet it was light enough to not provide too much strain on the tiny motor.
+          After some experimentation, I found that a range of 1200 to 2000, used as input to
+          writeMicroseconds(), would give me a good range of motion to strike an object with enough
+          force to produce sound. I used a glass cup as my “drum.” At this point, the robot could hit a
+          cup at varying speeds to produce music.
+
+          My next phase of development was to add more sounds. By observation, I could see that the “drumstick”
+          had enough range of motion to be able to hit another “drum” on its backswing. Therefore, I added
+          another “drum” and changed the resting position of the “drumstick” to be a midpoint between them
+          (1500 input). Now, the robot could create two different pitches, in varying patterns, and at
+          varying speeds. In order to program the patterns, I created an array of 1’s and 0’s in the code.
+          This array would then be passed to a loop that would iterate through it. A 0 would correspond to
+          one pitch, and a 1 to another pitch. With this system, changing the pattern of 1’s and 0’s in
+          the array would effectively change the “song” the robot was playing. At this point, the robot
+          was able to autonomously generate music.
+
+          The final step in development was to be able to add an element of human control. I decided to go with
+          preprogrammed songs. The microcontroller contains a WiFi server, which could be used to control the
+          device. The code was set up so that the device could read in the request via the URL of the page.
+          The URL was formatted as such: http://IP_address/command The command would vary based on the
+          instructions sent to the device. I created an HTML page with several buttons, which could change
+          the command portion of the URL. Each of the commands would change two parameters in the code: The
+          array which held the pattern of pitches to hit, and the timing parameter. Therefore, a user
+          could click on the buttons on the HTML page and play the different songs that the robot knows.
+          This was where my development ended at this time.
+          </pre>
+          <h3>Challenges:</h3>
+          <pre>
+            One of the largest challenges was getting the initial motor running. While I knew how to code the
+            motor correctly and how to connect it to the motor shield, I had to do some trial and error to
+            figure out how to attach the pin correctly. The numbers used in the attach function do not
+            correspond to the GPIO numbers on the motor shield. Therefore, figuring out how to activate the
+            pin was a significant challenge, as there is a significant lack of documentation in this area.
+            Another challenge was the physical size of the motor. Since the “drums” I used were
+            significantly larger than the servo, the servo would move after every strike. Using a tape
+            loop, I attached the servo to a cardboard base. The loop would still allow the motor to move
+            on the strike, but would pull it back into position afterwards. This provided the needed
+            stability to the robot.
+          </pre>
+          <h3>Further Design:</h3>
+          <pre>
+            This version of MusicBot is simple. Many additions can be made to improve its functionality.
+
+            In terms of hardware, perhaps another servo can be added that would rotate the “drums.” This would
+            reduce the limitation of 2 pitches. With several pitches, more complex patterns and songs can be
+            played. Also, perhaps the speed of the “drumstick” can be adjusted in order to adjust the volume
+            of each strike. This would add further variety to the music.
+
+            On the software side, being able to program your own song would be an intersting area of
+            development. This would perhaps require some use of dynamic memory, to allocate song arrays of
+            different sizes and patterns. Currently, to make the robot learn a new song, the request handling
+            if-else ladder has to be expanded. If there was a dynamic way to add in arrays, then new songs
+            could be made on the fly.
+
+            These are areas of further development, and can turn MusicBot into a fully functioning drum machine.
+          </pre>
+        </div>
+   </body>
+</html>

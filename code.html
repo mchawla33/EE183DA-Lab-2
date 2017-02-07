@@ -1,0 +1,163 @@
+<html>
+<head>
+		<title>MusicBot</title>
+	</head>
+	<body>
+		<nav>
+    		<ul>
+        		<li><a href="/">Home</a></li>
+	        	<li><a href="/quickstart">Quick Start</a></li>
+        		<li><a href="/dev">Development</a></li>
+        		<li><a href="/schematics">Schematics</a></li>
+        		<li><a href="/code">Code</a></li>
+        		<li><a href="/demo">Demonstration</a></li>
+    		</ul>
+		</nav>
+		<div>
+		<center><h1>Code</h1></center>
+		<h3>Autonomous</h3>
+			<pre>
+			#include &lt;Servo.h&gt;
+
+			Servo cups; //instantiate servo
+
+			void setup() {
+		  		cups.attach(5); //attach to pin
+			}
+
+			void loop() {
+		  		int song[] = {1, 0, 1, 0}; //pattern to play
+		  		int noteCount = 4;
+		  		int timer = 1000;     
+		  		//handle pattern: differnt pitches for each input 
+		  		for(int note = 0; note < noteCount; note++){
+					if(song[note] == 1){
+						cups.writeMicroseconds(2000);
+						delay(timer); 
+						cups.writeMicroseconds(1500);
+						delay(timer); 
+					}
+					else{
+						cups.writeMicroseconds(1200);
+						delay(timer);
+					 	cups.writeMicroseconds(1500); 
+						delay(timer);
+					}
+		  		} 
+		 	}
+		 	</pre>
+		 <h3>Controlled</h3>
+		 <pre>
+			#include &lt;Servo.h&gt;
+			#include &lt;ESP8266WiFi.h&gt;
+
+			Servo cups; //instantiate servo
+			WiFiServer server(80);  //instantiate server
+			
+			void setup() {
+  				WiFi.mode(WIFI_AP); 
+  				WiFi.softAP("MusicBot", "batman"); //set up username and password for server
+  				server.begin(); //start server 
+  				Serial.begin(115200); 
+  				IPAddress HTTPS_ServerIP = WiFi.softAPIP(); 
+  				Serial.println(HTTPS_ServerIP); 
+  
+ 				 cups.attach(5);  //attach servo to pin
+			}
+
+			void loop() {
+
+  				//only proceed if client is attached
+  				WiFiClient client = server.available(); 
+  				if(!client) {
+    				return; 
+  				}
+  				Serial.println("MusicBot connected....");
+
+  				//read in request from url
+  				String request = client.readString(); 
+  				String subrequest = request.substring(0, 16); 
+  				Serial.println(subrequest); 
+
+				  //intialize variables
+				  int song[] = {0, 0, 0, 0}; 
+				  int noteCount;
+				  int timer; 
+
+				  //handle request
+				  if(subrequest.indexOf("/A") != -1){
+				    song[0] = 1;
+				    song[1] = 0;
+				    song[2] = 1;
+				    song[3] = 0;
+				    timer = 1000; 
+				    noteCount = 4; 
+				  }
+				  else if (subrequest.indexOf("/B") != -1){
+				    song[0] = 1;
+				    song[1] = 1;
+				    song[2] = 1;
+				    song[3] = 0; 
+				    timer = 500; 
+				    noteCount = 4; 
+				  }
+				  else if (subrequest.indexOf("/C") != -1) {
+				    song[0] = 1;
+				    song[1] = 0;
+				    song[2] = 1;
+				    song[3] = 0; 
+				    timer = 100; 
+				    noteCount = 4; 
+				  }
+				  else {
+				    song[0] = 2;
+				    song[1] = 2;
+				    song[2] = 2;
+				    song[3] = 2; 
+				    timer = 1; 
+				    noteCount = 4; 
+				  }
+
+				  //send HTML page with controls
+				  String s = "HTTP/1.1 200 OK\r\n";
+				  s += "Content-Type: text/html\r\n\r\n";
+				  s += "&lt;!DOCTYPE HTML&gt;\r\n&lt;html&gt;\r\n";
+				  s += "&lt;br&gt;&lt;input type =\"button\" name=\"bA\" value=\"Play Song A\" onclick=\"location.href='/A'\"&gt;&lt;br&gt;";
+				  s += "&lt;br&gt;";
+				  s += "&lt;br&gt;&lt;input type =\"button\" name=\"bB\" value = \"Play Song B\" onclick=\"location.href='/B'\"&gt;&lt;br&gt;";
+				  s += "&lt;br&gt;";
+				  s += "&lt;br&gt;&lt;input type =\"button\" name=\"bC\" value = \"Play Song C\" onclick=\"location.href='/C'\"&gt;&lt;br&gt;";
+
+				  //execute song
+				  for(int reps = 0; reps &lt; 2; reps++){
+				    for(int note = 0; note &lt; noteCount; note++){
+				      if(song[note] == 1){
+				        cups.writeMicroseconds(2000);
+				        delay(timer); 
+				        cups.writeMicroseconds(1500);
+				        delay(timer); 
+				      }
+				      else if (song[note] == 0){
+				        cups.writeMicroseconds(1200);
+				        delay(timer);
+				        cups.writeMicroseconds(1500); 
+				        delay(timer);
+				      }
+				      else {
+				        cups.writeMicroseconds(1500); 
+				        delay(timer); 
+				      } 
+				    }
+				  }
+
+			  //load HTML page
+			  client.flush(); 
+			    client.print(s); 
+			    delay(1); 
+			    Serial.println("Client disconnected")
+			}
+			</pre>
+
+	 	</div>
+	 </body>
+</html>
