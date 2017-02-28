@@ -1,0 +1,75 @@
+<html>
+	<head>
+		<title>State Estimation</title>
+	</head>
+	<body>
+		<nav>
+    		<ul>
+        		<li><a href="/lab4">Home</a></li>
+        		<li><a href="/lab4_quickstart">Quickstart Guide</a></li>
+        		<li><a href="/lab4_flow">Flowchart</a></li>
+        		<li><a href="/lab4_kal_explain">Kalman Filter Theory</a></li>
+        		<li><a href="https://github.com/viktorzhang/183DA_lab4">Repository</a></li>
+    		</ul>
+		</nav>
+		<center><h1>Kalman Filter Theory</h1></center>
+		<div>
+		<pre>
+				An Extended Kalman Filter estimates the state using a two step process. The first step 
+				is the actual prediction. The second step is an update of the parameters. In the first 
+				step, the filter takes in the previous state and the control signal. These are plugged 
+				into a function which gives the predicted state:
+
+					Formula 1: x_t = f(x_t-1, u_t)
+	
+				In this formula, x_t is the state representation, t is the current time instant and u 
+				is the control signal. The output of this formula is the predicted state of where the 
+				robot should be. The next calculation is the prediction error matrix:
+
+					Formula 2: P_t = F_t * P_t-1 * F_t’ + Q
+
+				In this formula, P_t is the prediction error matrix. F_t is the Jacobian of function f 
+				from Formula 1. Ordinarily, the entire probability density function of F would be 
+				needed to calculate the PDF. However, we can plug in the current state measurement, as 
+				done in Formula 1, and calculate the Jacobian at each step. F_t’ is the inverse of 
+				F_t. Q is the process noise. It is a covariance matrix, with a row and column for each 
+				variable in the state representation x. In our representation, the state variables are 
+				independent, leading Q to be a diagonal matrix, with the variance due to process noise 
+				on the diagonal. 
+
+				The next step in for the filter is updating its predictions. Here another function is 
+				required:
+
+					Formula 3: z_t = h(x_t-1, y_t)
+
+				Here z_t is the observed state. It is calculated through function h, which takes in 
+				the previous state and the sensor readings, and predicts the state of the robot. Now 
+				the update can begin. First the gain of the filter is calculated:
+
+					Formula 4: K_t = P_t *  H_t’ * ( H_t * P_t * H_t’ + R) ^ -1
+
+				Here K_t is the gain at the current time instant. H_t is the Jacobian of function h in 
+				Formula 3. It is calculated much in the same way as F in Formula 2. H_t’ is the 
+				inverse of H_t. P_t is taken from Formula 2. R is covariance noise matrix similar to 
+				Q. However, this is the noise based on the sensors used. If the sensors are 
+				independent from each other, then R is a diagonal matrix, with the variance of each 
+				sensor reading on the diagonal. The gain is now used to calculate the state estimate. 
+
+					Formula 5: X_t = x_t - K_t * (z_t - h(x_t, y_t))
+
+				X_t is the state estimate and is the output of the filter. When the filter is used 
+				again, it is sent as x_t in the next iteration. The x_t in the formula above is taken 
+				from Formula 1. K_t and z_t are taken from Formulas 3 and 4 respectively.  The last 
+				step is updating the prediction error matrix:
+
+					Formula 6: P_t+1 = (I - K_t * H_t) * P_t
+
+				The prediction error matrix is updated to be used on the next iteration. I is the 
+				identity matrix, and K_t and H_t are the same as described above. P_t is the 
+				prediction error matrix of the current iteration. Using this process, the Extended 
+				Kalman filter is able to estimate the state, despite noise in the system.
+
+				</pre>
+			</div>
+	</body>
+</html>
