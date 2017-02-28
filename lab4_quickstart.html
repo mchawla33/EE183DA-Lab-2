@@ -1,0 +1,46 @@
+<html>
+	<head>
+		<title>State Estimation</title>
+	</head>
+	<body>
+		<nav>
+    		<ul>
+        		<li><a href="/lab4">Home</a></li>
+        		<li><a href="/lab4_quickstart">Quickstart Guide</a></li>
+        		<li><a href="/lab4_flow">Flowchart</a></li>
+        		<li><a href="/lab4_kal_explain">Kalman Filter Theory</a></li>
+        		<li><a href="https://github.com/viktorzhang/183DA_lab4">Repository</a></li>
+    		</ul>
+		</nav>
+        <center><h1>Quickstart Guide</h1></center>
+        <pre>
+
+            <ol>
+                <li>Download Git Repository</li>
+                <li>Run main.py</li>
+                <li>Follow User Interface Below</li>
+            </ol>
+
+            <h2>User Interface:</h2>
+
+            The primary input to the robotic car is human controlled that subsequently determines the 
+            direction for forward and backwards motion as well as turn direction. The communication 
+            between the user and the software is actuated using the system arrow keys where ‘up’ and 
+            ‘down’ represent the forward and backwards directions. Turning is effected as a continuous 
+            angular motion at a rate of 3.3rad/s in either direction as determined by the ‘left’ and 
+            ‘right’ arrow keys.  The input from the system arrow keys is translated to a numeric 
+            character (‘1’, ‘2’, ‘3’, and ‘4’ to represent ‘up’, ‘down’, ‘right’, and ‘left’ 
+            respectively). These numeric characters are converted to voltage signals that further 
+            drive the servo motors which act as wheels to the robot car. 
+
+            <h2>Output Display</h2>
+
+            The output of the system is a graphical display that shows two trajectories of the car: 
+            one expected and one real world. This is done by a function that takes in four arguments: 
+            the x and y coordinates of the trajectories as lists and plots simultaneously them on one 
+            graph. This graphically determines the deviations of the car from the expected, caused due 
+            to system and processing noise.
+
+        </pre>
+    </body>
+</html>
