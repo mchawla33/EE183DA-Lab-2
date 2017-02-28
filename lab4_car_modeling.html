@@ -1,0 +1,50 @@
+<html>
+	<head>
+		<title>State Estimation</title>
+	</head>
+	<body>
+		<nav>
+    		<ul>
+        		<li><a href="/lab4">Home</a></li>
+        		<li><a href="/lab4_quickstart">Quickstart Guide</a></li>
+        		<li><a href="/lab4_flow">Flowchart</a></li>
+        		<li><a href="/lab4_kal_explain">Kalman Filter Theory</a></li>
+        		<li><a href="/lab4_car_modeling">Sensor and Actuator Simulation</a></li>
+        		<li><a href="https://github.com/viktorzhang/183DA_lab4">Repository</a></li>
+    		</ul>
+		</nav>
+		<center><h1>Sensor and Actuator Noise Simulation</h1></center>
+		<div>
+			<div>
+				<h3>Gyroscope</h3>
+				<div>
+					Gyroscope we are using: <a href="https://www.invensense.com/products/motion-tracking/6-axis/mpu-6050/">MPU 6050</a>
+					<p>
+						From the data sheet of the gyroscope, we found that if we set the range of measurement of the gyroscope to ±250 degree/s (which is enough for this application), then the total RMS noise is 0.05 degree/s-rms. Because the gyroscope uses the accelerometer to correct the long term drift of the gyroscope, the gyroscope has no bias(error offset). So we modeled the noise of the gyroscope as a Normal distribution with a standard deviation of 0.05 degree/s.
+					</p>
+				</div>		
+			</div>
+			<div>
+				<h3>Process Noise - Actuactor(servo) behavior</h3>
+				<img src="./servo_test.jpg" height="420" width="420">
+				<p>
+					In our simulation, when we want to turn the motor, we always set the PWM signal to either 180 or 0, depending on whether we want to motor to rotate the clockwise or counterclockwise. In order to find the turning speed of the servo and the uncertainty of the process, I let the wheel spin on top of a protractor (as in the image above). I connected the center of the protractor to the center of the wheel, but the wheel can still spin freely without moving the protractor. I also fixed a needle to the wheel to read the angles better. 
+					Then I wrote a program to let the servo turn for a certain period of time. I used varying length of time(100ms, 500ms, 1s, 5s) to better simulate the dynamics of the actual car. I found that the wheel spins further in a unit time if we use a small step(such as 100ms). A possible explanation is that, because of the inertia of the servo and wheel, it takes some time to stop completely. And this error is more obvious if the turning angle is smaller.
+					From the data I collected above, I used averaged the angular speed for the 5-second tests to be the true average of the angular speed. Then I modeled the error as a Gaussian distribution and found the mean and standard deviation. 
+					In units of mm/s (converted based on the radius of the wheel), the noise is ~N(5.04, 6.83).
+					<br>
+					<a href="https://github.com/viktorzhang/183DA_lab4/blob/master/servo_test/servo_test.ino">Servo testing code</a>
+				</p>
+			</div>
+			<div>
+				<h3>IR sensor behavior</h3>
+				<img src="./ir_test.jpg" height="420" width="420">
+				<p>
+					In this part, I want to find the uncertainty from the IR sensor. We first folded the car, and installed the wheel and IR sensor on the car. Then I let the servo run for a period of 0.5s, 1s, and 5s, and counted the number of transitions the IR sensor read. From the number of transitions, the speed of the servo can be estimated. Similar to the method I used to model servo behavior. I modeled the noise of the IR sensor to be ~N(-4.75, 14.34), in unit mm/s.
+					<br>
+					<a href="https://github.com/viktorzhang/183DA_lab4/blob/master/irSensorTest/irSensor_test.ino">IR sensor testing code</a>
+				</p>
+			</div>
+		</div>
+	</body>
+</html>
