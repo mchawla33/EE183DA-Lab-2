@@ -24,17 +24,11 @@
 
             <h2>User Interface:</h2>
 
-            The primary input to the robotic car is human controlled that subsequently determines the 
-            direction for forward and backwards motion as well as turn direction. The communication 
-            between the user and the software is actuated using the system arrow keys where ‘up’ and 
-            ‘down’ represent the forward and backwards directions. Turning is effected as a continuous 
-            angular motion at a rate of 3.3rad/s in either direction as determined by the ‘left’ and 
-            ‘right’ arrow keys.  The input from the system arrow keys is translated to a numeric 
-            character (‘1’, ‘2’, ‘3’, and ‘4’ to represent ‘up’, ‘down’, ‘right’, and ‘left’ 
-            respectively). These numeric characters are converted to voltage signals that further 
-            drive the servo motors which act as wheels to the robot car. 
+            The primary input to the robotic car is human controlled that subsequently determines the direction for forward and backwards motion as well as turn direction. The communication between the user and the software is actuated using the system arrow keys where ‘up’ and ‘down’ represent the forward and backwards directions. Turning is effected as a continuous angular motion at a rate of 5.16rad/s in either direction as determined by the ‘left’ and ‘right’ arrow keys.  The input from the system arrow keys are bond to ‘up’, ‘down’, ‘right’, and ‘left’ commands respectively. These commands are converted to voltage signals that further drive the servo motors which act as wheels to the robot car. 
 
             <h2>Output Display:</h2>
+
+            After a series of command inputs, hit 'c' and the trajectories of actual and estimated states will be plotted.
 
             The output of the system is a graphical display that shows two trajectories of the car: 
             one expected and one real world. This is done by a function that takes in four arguments: 
